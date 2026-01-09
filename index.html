@@ -2,14 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Best Deals Store | Curated Affiliate Products</title>
-  <meta name="description" content="Discover the best deals, discounts, and top-rated products across categories. Updated daily." />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- SEO -->
-  <meta property="og:title" content="Best Deals Store" />
-  <meta property="og:description" content="Top deals. Real discounts. Curated products." />
-  <meta property="og:type" content="website" />
+  <title>AffiLks | Plant & Gardening Store</title>
+  <meta name="description" content="Discover the best plants, gardening tools, and eco-friendly products at the best prices." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -17,11 +13,11 @@
 
 <header class="site-header">
   <div class="container">
-    <h1 class="logo">BestDeals</h1>
+    <h1 class="logo">AffiLks 🌱</h1>
     <nav class="nav">
       <a href="index.html">Home</a>
-      <a href="category.html?cat=electronics">Electronics</a>
-      <a href="category.html?cat=home">Home</a>
+      <a href="category.html?cat=plants">Plants</a>
+      <a href="category.html?cat=tools">Gardening Tools</a>
       <a href="about.html">About</a>
     </nav>
   </div>
@@ -30,21 +26,54 @@
 <main class="container">
 
   <section class="hero">
-    <h2>Top Deals You Shouldn’t Miss</h2>
-    <p>Hand-picked affiliate products with real discounts.</p>
+    <h2>Grow Green. Live Better.</h2>
+    <p>Curated plants & gardening essentials for a healthier home.</p>
   </section>
 
-  <section id="product-grid" class="product-grid">
-    <!-- Products injected via JS -->
-  </section>
+  <section id="product-grid" class="product-grid"></section>
 
 </main>
 
 <footer class="site-footer">
-  <p>© 2026 BestDeals. Affiliate links may earn us a commission.</p>
+  <p>© 2026 AffiLks. Affiliate links may earn us a commission.</p>
 </footer>
 
-<script src="js/products.js"></script>
-<script src="js/render.js"></script>
+<script type="module">
+  import { fetchAllProducts } from "./js/store.js";
+
+  const grid = document.getElementById("product-grid");
+
+  function render(products) {
+    grid.innerHTML = "";
+
+    if (!products.length) {
+      grid.innerHTML = "<p>No products available.</p>";
+      return;
+    }
+
+    products.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <div class="product-title">${p.name}</div>
+        <div class="rating">⭐ ${p.rating || "—"}</div>
+        <div>
+          <span class="price">₹${p.discountPrice}</span>
+          <span class="old-price">₹${p.price}</span>
+        </div>
+        <a class="buy-btn" href="product.html?id=${p.id}">
+          View Details
+        </a>
+      `;
+
+      grid.appendChild(card);
+    });
+  }
+
+  fetchAllProducts().then(render);
+</script>
+
 </body>
 </html>

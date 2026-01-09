@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin | AffiLks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<main class="container">
+
+  <h2>Admin Panel</h2>
+
+  <!-- LOGIN -->
+  <section id="login-section">
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button id="login-btn">Login</button>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="admin-section" style="display:none;">
+    <h3>Add / Edit Product</h3>
+
+    <input id="name" placeholder="Product name" />
+    <input id="category" placeholder="Category (plants, tools…)" />
+    <input id="price" type="number" placeholder="Price" />
+    <input id="discountPrice" type="number" placeholder="Discount price" />
+    <input id="rating" type="number" step="0.1" placeholder="Rating" />
+    <input id="image" placeholder="Image URL" />
+    <textarea id="description" placeholder="Description"></textarea>
+
+    <button id="add-btn">Save Product</button>
+
+    <h3>Existing Products</h3>
+    <ul id="product-list"></ul>
+  </section>
+
+</main>
+
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>

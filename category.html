@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8" />
 
-  <title id="page-title">Category | BestDeals</title>
-  <meta name="description" id="meta-desc" content="Browse best deals by category" />
+  <title id="page-title">Category | AffiLks</title>
+  <meta name="description" id="meta-desc" content="Browse eco-friendly plants and gardening products." />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Canonical -->
-  <link id="canonical-link" rel="canonical" href="" />
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -16,7 +13,7 @@
 
 <header class="site-header">
   <div class="container">
-    <h1 class="logo">BestDeals</h1>
+    <h1 class="logo">AffiLks 🌱</h1>
     <nav class="nav">
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
@@ -29,15 +26,9 @@
   <h2 id="category-title"></h2>
 
   <div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="Search products..." />
+    <input type="text" id="searchInput" placeholder="Search..." />
     <input type="number" id="minPrice" placeholder="Min ₹" />
     <input type="number" id="maxPrice" placeholder="Max ₹" />
-
-    <select id="ratingFilter">
-      <option value="">All Ratings</option>
-      <option value="4">4★ & above</option>
-      <option value="3">3★ & above</option>
-    </select>
 
     <select id="sortBy">
       <option value="">Sort</option>
@@ -52,27 +43,76 @@
 </main>
 
 <footer class="site-footer">
-  <p>© 2026 BestDeals. Affiliate links may earn us a commission.</p>
+  <p>© 2026 AffiLks. Affiliate links may earn us a commission.</p>
 </footer>
 
-<script src="js/products.js"></script>
-<script src="js/search.js"></script>
-<script src="js/filters.js"></script>
-<script src="js/render.js"></script>
+<script type="module">
+  import { fetchProductsByCategory } from "./js/store.js";
 
-<script>
   const params = new URLSearchParams(window.location.search);
-  const cat = params.get("cat");
+  const category = params.get("cat");
+  const grid = document.getElementById("product-grid");
 
-  if (cat) {
-    const title = cat.charAt(0).toUpperCase() + cat.slice(1);
-    document.getElementById("page-title").innerText = `${title} Deals | BestDeals`;
-    document.getElementById("meta-desc").setAttribute(
-      "content",
-      `Best deals and discounts on ${title}. Compare prices and ratings before buying.`
-    );
-    document.getElementById("canonical-link").href = window.location.href;
+  document.getElementById("category-title").innerText =
+    category ? category.charAt(0).toUpperCase() + category.slice(1) : "Products";
+
+  let products = [];
+
+  function applyFilters() {
+    let list = [...products];
+
+    const q = searchInput.value.toLowerCase();
+    const min = Number(minPrice.value);
+    const max = Number(maxPrice.value);
+    const sort = sortBy.value;
+
+    if (q) list = list.filter(p => p.name.toLowerCase().includes(q));
+    if (min) list = list.filter(p => p.discountPrice >= min);
+    if (max) list = list.filter(p => p.discountPrice <= max);
+
+    if (sort === "priceLow") list.sort((a,b)=>a.discountPrice-b.discountPrice);
+    if (sort === "priceHigh") list.sort((a,b)=>b.discountPrice-a.discountPrice);
+    if (sort === "ratingHigh") list.sort((a,b)=>(b.rating||0)-(a.rating||0));
+
+    render(list);
   }
+
+  function render(list) {
+    grid.innerHTML = "";
+    if (!list.length) {
+      grid.innerHTML = "<p>No products found.</p>";
+      return;
+    }
+
+    list.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <div class="product-title">${p.name}</div>
+        <div class="rating">⭐ ${p.rating || "—"}</div>
+        <div>
+          <span class="price">₹${p.discountPrice}</span>
+          <span class="old-price">₹${p.price}</span>
+        </div>
+        <a class="buy-btn" href="product.html?id=${p.id}">
+          View Details
+        </a>
+      `;
+
+      grid.appendChild(card);
+    });
+  }
+
+  fetchProductsByCategory(category).then(data => {
+    products = data;
+    render(products);
+  });
+
+  document
+    .querySelectorAll("#searchInput, #minPrice, #maxPrice, #sortBy")
+    .forEach(el => el.addEventListener("input", applyFilters));
 </script>
 
 </body>

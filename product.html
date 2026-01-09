@@ -3,18 +3,9 @@
 <head>
   <meta charset="UTF-8" />
 
-  <title id="page-title">Product | BestDeals</title>
-  <meta name="description" id="meta-desc" content="Best deal on product" />
+  <title id="page-title">Product | AffiLks</title>
+  <meta name="description" id="meta-desc" content="Plant and gardening product details." />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Canonical -->
-  <link id="canonical-link" rel="canonical" href="" />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="product" />
-  <meta property="og:title" id="og-title" content="" />
-  <meta property="og:description" id="og-desc" content="" />
-  <meta property="og:image" id="og-image" content="" />
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
@@ -22,10 +13,10 @@
 
 <header class="site-header">
   <div class="container">
-    <h1 class="logo">BestDeals</h1>
+    <h1 class="logo">AffiLks 🌱</h1>
     <nav class="nav">
       <a href="index.html">Home</a>
-      <a href="category.html">Categories</a>
+      <a href="category.html?cat=plants">Plants</a>
       <a href="about.html">About</a>
     </nav>
   </div>
@@ -33,19 +24,11 @@
 
 <main class="container product-page">
 
-  <!-- Breadcrumb -->
-  <nav class="breadcrumb">
-    <a href="index.html">Home</a> ›
-    <a id="breadcrumb-category" href="#">Category</a> ›
-    <span id="breadcrumb-product"></span>
-  </nav>
-
   <div class="product-detail">
     <img id="product-image" src="" alt="" />
 
     <div class="product-info">
       <h2 id="product-name"></h2>
-
       <div class="rating" id="product-rating"></div>
 
       <div class="price-box">
@@ -69,12 +52,74 @@
 </main>
 
 <footer class="site-footer">
-  <p>© 2026 BestDeals. Affiliate links may earn us a commission.</p>
+  <p>© 2026 AffiLks. Affiliate links may earn us a commission.</p>
 </footer>
 
-<!-- Scripts -->
-<script src="js/products.js"></script>
-<script src="js/product.js"></script>
+<script type="module">
+  import { fetchAllProducts } from "./js/store.js";
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  const img = document.getElementById("product-image");
+  const nameEl = document.getElementById("product-name");
+  const ratingEl = document.getElementById("product-rating");
+  const discountEl = document.getElementById("product-discount");
+  const priceEl = document.getElementById("product-price");
+  const descEl = document.getElementById("product-desc");
+  const buyLink = document.getElementById("buy-link");
+  const relatedGrid = document.getElementById("related-products");
+
+  fetchAllProducts().then(products => {
+    const product = products.find(p => p.id === id);
+
+    if (!product) {
+      document.body.innerHTML = "<p style='padding:20px'>Product not found.</p>";
+      return;
+    }
+
+    document.getElementById("page-title").innerText =
+      product.name + " | AffiLks";
+
+    document.getElementById("meta-desc").setAttribute(
+      "content",
+      product.description
+    );
+
+    img.src = product.image;
+    img.alt = product.name;
+    nameEl.innerText = product.name;
+    ratingEl.innerText = product.rating ? "⭐ " + product.rating : "";
+    discountEl.innerText = "₹" + product.discountPrice;
+    priceEl.innerText = "₹" + product.price;
+    descEl.innerText = product.description;
+    buyLink.href = product.affiliateLink || "#";
+
+    const related = products.filter(
+      p => p.category === product.category && p.id !== product.id
+    );
+
+    related.slice(0, 4).forEach(p => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <div class="product-title">${p.name}</div>
+        <div class="rating">⭐ ${p.rating || "—"}</div>
+        <div>
+          <span class="price">₹${p.discountPrice}</span>
+          <span class="old-price">₹${p.price}</span>
+        </div>
+        <a class="buy-btn" href="product.html?id=${p.id}">
+          View Details
+        </a>
+      `;
+
+      relatedGrid.appendChild(card);
+    });
+  });
+</script>
 
 </body>
 </html>
