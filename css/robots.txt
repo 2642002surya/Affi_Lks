@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://2642002surya.github.io/Affi_Lks/sitemap.xml

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <title id="page-title">Category | BestDeals</title>
+  <meta name="description" id="meta-desc" content="Browse best deals by category" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Canonical -->
+  <link id="canonical-link" rel="canonical" href="" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <h1 class="logo">BestDeals</h1>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <h2 id="category-title"></h2>
+
+  <div class="filter-bar">
+    <input type="text" id="searchInput" placeholder="Search products..." />
+    <input type="number" id="minPrice" placeholder="Min ₹" />
+    <input type="number" id="maxPrice" placeholder="Max ₹" />
+
+    <select id="ratingFilter">
+      <option value="">All Ratings</option>
+      <option value="4">4★ & above</option>
+      <option value="3">3★ & above</option>
+    </select>
+
+    <select id="sortBy">
+      <option value="">Sort</option>
+      <option value="priceLow">Price: Low → High</option>
+      <option value="priceHigh">Price: High → Low</option>
+      <option value="ratingHigh">Rating: High → Low</option>
+    </select>
+  </div>
+
+  <section id="product-grid" class="product-grid"></section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© 2026 BestDeals. Affiliate links may earn us a commission.</p>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/search.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/render.js"></script>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get("cat");
+
+  if (cat) {
+    const title = cat.charAt(0).toUpperCase() + cat.slice(1);
+    document.getElementById("page-title").innerText = `${title} Deals | BestDeals`;
+    document.getElementById("meta-desc").setAttribute(
+      "content",
+      `Best deals and discounts on ${title}. Compare prices and ratings before buying.`
+    );
+    document.getElementById("canonical-link").href = window.location.href;
+  }
+</script>
+
+</body>
+</html>

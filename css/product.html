@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <title id="page-title">Product | BestDeals</title>
+  <meta name="description" id="meta-desc" content="Best deal on product" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Canonical -->
+  <link id="canonical-link" rel="canonical" href="" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="product" />
+  <meta property="og:title" id="og-title" content="" />
+  <meta property="og:description" id="og-desc" content="" />
+  <meta property="og:image" id="og-image" content="" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <h1 class="logo">BestDeals</h1>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="category.html">Categories</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container product-page">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="index.html">Home</a> ›
+    <a id="breadcrumb-category" href="#">Category</a> ›
+    <span id="breadcrumb-product"></span>
+  </nav>
+
+  <div class="product-detail">
+    <img id="product-image" src="" alt="" />
+
+    <div class="product-info">
+      <h2 id="product-name"></h2>
+
+      <div class="rating" id="product-rating"></div>
+
+      <div class="price-box">
+        <span class="price" id="product-discount"></span>
+        <span class="old-price" id="product-price"></span>
+      </div>
+
+      <p id="product-desc"></p>
+
+      <a id="buy-link" class="buy-btn large" target="_blank" rel="nofollow noopener">
+        Buy Now
+      </a>
+    </div>
+  </div>
+
+  <section>
+    <h3>Related Products</h3>
+    <div id="related-products" class="product-grid"></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© 2026 BestDeals. Affiliate links may earn us a commission.</p>
+</footer>
+
+<!-- Scripts -->
+<script src="js/products.js"></script>
+<script src="js/product.js"></script>
+
+</body>
+</html>
